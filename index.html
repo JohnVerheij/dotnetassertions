@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DotNetAssertions</title>
+<meta name="description" content="A family of focused, AOT-safe assertion extensions for TUnit. Nine small packages, each adding a fluent Assert.That(...) vocabulary for one domain.">
+<meta property="og:title" content="DotNetAssertions">
+<meta property="og:description" content="Focused assertion extensions for TUnit. Nine small packages, one fluent vocabulary per domain.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%A7%AA%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --ground: #f4f4f7; --surface: #ffffff; --ink: #17171d; --muted: #5c5c6b; --faint: #8a8a99;
+    --border: #e4e4ec; --border-strong: #d3d3de; --accent: #5836f0; --accent-soft: rgba(88,54,240,0.10);
+    --code-bg: #f7f7fb; --shadow: 0 1px 2px rgba(20,20,40,0.04), 0 8px 24px rgba(20,20,40,0.05);
+    --mono: "Cascadia Code", "JetBrains Mono", "SF Mono", Consolas, ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0e0e13; --surface: #16161d; --ink: #e9e9f1; --muted: #9a9aab; --faint: #6b6b7b;
+      --border: #24242e; --border-strong: #33333f; --accent: #9683ff; --accent-soft: rgba(150,131,255,0.13);
+      --code-bg: #101017; --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #f4f4f7; --surface: #ffffff; --ink: #17171d; --muted: #5c5c6b; --faint: #8a8a99;
+    --border: #e4e4ec; --border-strong: #d3d3de; --accent: #5836f0; --accent-soft: rgba(88,54,240,0.10);
+    --code-bg: #f7f7fb; --shadow: 0 1px 2px rgba(20,20,40,0.04), 0 8px 24px rgba(20,20,40,0.05);
+  }
+  :root[data-theme="dark"] {
+    --ground: #0e0e13; --surface: #16161d; --ink: #e9e9f1; --muted: #9a9aab; --faint: #6b6b7b;
+    --border: #24242e; --border-strong: #33333f; --accent: #9683ff; --accent-soft: rgba(150,131,255,0.13);
+    --code-bg: #101017; --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  a { color: inherit; }
+  .bar { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid var(--border); }
+  .mark { font-family: var(--mono); font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em; color: var(--ink); }
+  .mark b { color: var(--accent); font-weight: 600; }
+  .bar .right { display: flex; align-items: center; gap: 16px; }
+  .bar .home { font-family: var(--mono); font-size: 0.78rem; color: var(--faint); text-decoration: none; }
+  .bar .home:hover { color: var(--accent); }
+  .toggle { font-family: var(--mono); font-size: 0.72rem; color: var(--faint); background: transparent; border: 1px solid var(--border); border-radius: 7px; padding: 4px 9px; cursor: pointer; transition: color 0.15s, border-color 0.15s; }
+  .toggle:hover { color: var(--accent); border-color: var(--accent); }
+  .toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  header { padding: 72px 0 40px; }
+  .lede { font-family: var(--mono); font-weight: 600; font-size: clamp(1.9rem, 5vw, 3.1rem); line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance; max-width: 15ch; }
+  .sub { font-size: 1.05rem; color: var(--muted); margin: 0; max-width: 54ch; }
+  .sub code { font-family: var(--mono); font-size: 0.9em; background: var(--accent-soft); color: var(--accent); padding: 1px 6px; border-radius: 5px; }
+  .hero-lines { margin: 40px 0 8px; padding: 22px 24px; background: var(--code-bg); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; font-family: var(--mono); font-size: clamp(0.82rem, 1.9vw, 1rem); line-height: 2; }
+  .hero-lines .row { white-space: nowrap; }
+  .k { color: var(--faint); }
+  .m { color: var(--accent); }
+  .eyebrow { display: flex; align-items: baseline; gap: 12px; margin: 64px 0 22px; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(304px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 12px; transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
+  .card:hover { transform: translateY(-3px); border-color: var(--border-strong); box-shadow: var(--shadow); }
+  .pkg { font-family: var(--mono); font-size: 1.02rem; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  .pkg .t { color: var(--faint); font-weight: 400; }
+  .desc { font-size: 0.92rem; color: var(--muted); margin: 0; flex: 1; }
+  .desc code { font-family: var(--mono); font-size: 0.88em; color: var(--ink); }
+  .snippet { font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; margin: 0; background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; overflow-x: auto; color: var(--ink); }
+  .snippet .k { color: var(--faint); }
+  .snippet .m { color: var(--accent); }
+  .links { display: flex; gap: 6px; margin-top: 4px; }
+  .links a { font-family: var(--mono); font-size: 0.75rem; text-decoration: none; color: var(--muted); padding: 5px 10px; border: 1px solid var(--border); border-radius: 7px; transition: color 0.15s, border-color 0.15s, background 0.15s; }
+  .links a:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  .links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  footer { margin-top: 72px; padding: 28px 0 48px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; font-family: var(--mono); font-size: 0.78rem; color: var(--faint); }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  footer .dot { color: var(--border-strong); }
+  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <span class="mark">dotnet<b>assertions</b></span>
+    <div class="right">
+      <button class="toggle" id="themeToggle" type="button" aria-label="Toggle color theme">theme</button>
+      <a class="home" href="https://github.com/JohnVerheij">github.com/JohnVerheij</a>
+    </div>
+  </div>
+
+  <header>
+    <h1 class="lede">Focused assertion extensions for TUnit.</h1>
+    <p class="sub">Nine small packages. Each adds a fluent <code>Assert.That(&hellip;)</code> vocabulary for one domain &mdash; AOT-safe, reflection-free, MIT.</p>
+    <div class="hero-lines" aria-hidden="true">
+      <div class="row"><span class="k">await</span> Assert.That(response).<span class="m">HasStatusCode</span>(OK);</div>
+      <div class="row"><span class="k">await</span> Assert.That(logs).<span class="m">HasLogged</span>(Warning, "retry");</div>
+      <div class="row"><span class="k">await</span> Assert.That(output).<span class="m">MatchesSnapshot</span>();</div>
+    </div>
+  </header>
+
+  <div class="eyebrow">The family</div>
+
+  <div class="grid">
+    <article class="card"><h3 class="pkg">LogAssertions<span class="t">.TUnit</span></h3><p class="desc">Assert on logs captured from <code>ILogger</code> via a fake collector.</p><pre class="snippet"><span class="k">await</span> Assert.That(logs).<span class="m">HasLogged</span>(Warning);</pre><div class="links"><a href="https://logassertions.dev">Docs</a><a href="https://www.nuget.org/packages/LogAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/LogAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">SnapshotAssertions<span class="t">.TUnit</span></h3><p class="desc">Text-snapshot and approval testing with scrubbers and diffs.</p><pre class="snippet"><span class="k">await</span> Assert.That(output).<span class="m">MatchesSnapshot</span>();</pre><div class="links"><a href="https://snapshotassertions.dev">Docs</a><a href="https://www.nuget.org/packages/SnapshotAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/SnapshotAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">TimeAssertions<span class="t">.TUnit</span></h3><p class="desc"><code>TimeProvider</code> state, timer leaks, and time budgets.</p><pre class="snippet"><span class="k">await</span> Assert.That(provider).<span class="m">HasNoActiveTimers</span>();</pre><div class="links"><a href="https://timeassertions.dev">Docs</a><a href="https://www.nuget.org/packages/TimeAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/TimeAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">MathAssertions<span class="t">.TUnit</span></h3><p class="desc">Tolerance-aware numeric, geometry, and statistics checks.</p><pre class="snippet"><span class="k">await</span> Assert.That(v).<span class="m">IsApproximatelyEqualTo</span>(pi);</pre><div class="links"><a href="https://mathassertions.dev">Docs</a><a href="https://www.nuget.org/packages/MathAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/MathAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">JsonAssertions<span class="t">.TUnit</span></h3><p class="desc">JSON path, value, and shape assertions over a document.</p><pre class="snippet"><span class="k">await</span> Assert.That(json).<span class="m">HasJsonProperty</span>("id");</pre><div class="links"><a href="https://jsonassertions.dev">Docs</a><a href="https://www.nuget.org/packages/JsonAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/JsonAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">SseAssertions<span class="t">.TUnit</span></h3><p class="desc">Server-Sent Events wire-format and event-stream checks.</p><pre class="snippet"><span class="k">await</span> Assert.That(stream).<span class="m">HasEvent</span>("message");</pre><div class="links"><a href="https://sseassertions.dev">Docs</a><a href="https://www.nuget.org/packages/SseAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/SseAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">GrpcAssertions<span class="t">.TUnit</span></h3><p class="desc">gRPC status codes, metadata, and response assertions.</p><pre class="snippet"><span class="k">await</span> Assert.That(call).<span class="m">HasStatusCode</span>(OK);</pre><div class="links"><a href="https://grpcassertions.dev">Docs</a><a href="https://www.nuget.org/packages/GrpcAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/GrpcAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">TracingAssertions<span class="t">.TUnit</span></h3><p class="desc">OpenTelemetry <code>Activity</code>, span, and tag assertions.</p><pre class="snippet"><span class="k">await</span> Assert.That(activity).<span class="m">HasTag</span>("http.method");</pre><div class="links"><a href="https://tracingassertions.dev">Docs</a><a href="https://www.nuget.org/packages/TracingAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/TracingAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">MetricsAssertions<span class="t">.TUnit</span></h3><p class="desc">Metrics and instrument measurements via a collector.</p><pre class="snippet"><span class="k">await</span> Assert.That(metrics).<span class="m">HasCounted</span>("requests");</pre><div class="links"><a href="https://metricsassertions.dev">Docs</a><a href="https://www.nuget.org/packages/MetricsAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/MetricsAssertions.TUnit">GitHub</a></div></article>
+  </div>
+
+  <footer>
+    <span>MIT</span><span class="dot">&bull;</span>
+    <span>&copy; 2026 John Verheij</span><span class="dot">&bull;</span>
+    <span>net10.0</span><span class="dot">&bull;</span>
+    <a href="https://github.com/JohnVerheij">GitHub</a><span class="dot">&bull;</span>
+    <span class="k">built on TUnit</span>
+  </footer>
+</div>
+<script>
+  (function () {
+    var root = document.documentElement, key = "dna-theme";
+    try { var saved = localStorage.getItem(key); if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved); } catch (e) {}
+    document.getElementById("themeToggle").addEventListener("click", function () {
+      var dark = root.getAttribute("data-theme") === "dark" ||
+        (!root.getAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      var next = dark ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem(key, next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
