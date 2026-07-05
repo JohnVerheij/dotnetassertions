@@ -90,7 +90,7 @@
 
   <header>
     <h1 class="lede">Focused assertion extensions for TUnit.</h1>
-    <p class="sub">Nine small packages. Each adds a fluent <code>Assert.That(&hellip;)</code> vocabulary for one domain &mdash; AOT-safe, reflection-free, MIT.</p>
+    <p class="sub">Nine small packages. Each adds a fluent <code>Assert.That(...)</code> vocabulary for one domain. AOT-safe, reflection-free, MIT.</p>
     <div class="hero-lines" aria-hidden="true">
       <div class="row"><span class="k">await</span> Assert.That(response).<span class="m">HasStatusCode</span>(OK);</div>
       <div class="row"><span class="k">await</span> Assert.That(logs).<span class="m">HasLogged</span>(Warning, "retry");</div>
@@ -122,14 +122,18 @@
 </div>
 <script>
   (function () {
-    var root = document.documentElement, key = "dna-theme";
-    try { var saved = localStorage.getItem(key); if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved); } catch (e) {}
-    document.getElementById("themeToggle").addEventListener("click", function () {
-      var dark = root.getAttribute("data-theme") === "dark" ||
-        (!root.getAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
-      var next = dark ? "light" : "dark";
-      root.setAttribute("data-theme", next);
-      try { localStorage.setItem(key, next); } catch (e) {}
+    var root = document.documentElement, key = "dna-theme", btn = document.getElementById("themeToggle");
+    function apply(mode) {
+      if (mode === "auto") { root.removeAttribute("data-theme"); try { localStorage.removeItem(key); } catch (e) {} }
+      else { root.setAttribute("data-theme", mode); try { localStorage.setItem(key, mode); } catch (e) {} }
+      btn.textContent = mode;
+    }
+    var saved = "auto";
+    try { var s = localStorage.getItem(key); if (s === "light" || s === "dark") saved = s; } catch (e) {}
+    apply(saved);
+    btn.addEventListener("click", function () {
+      var cur = root.getAttribute("data-theme");
+      apply(!cur ? "light" : cur === "light" ? "dark" : "auto");
     });
   })();
 </script>
