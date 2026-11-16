@@ -1,0 +1,60 @@
+name: site
+
+# Keeps the landing page honest: every code snippet on index.html must compile
+# against the newest published packages, and every link must resolve.
+# The weekly run catches a package release that breaks a snippet.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  snippets:
+    name: Snippets compile
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install .NET SDKs
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          dotnet-version: |
+            10.0.x
+            11.0.x
+
+      - name: Extract snippets from index.html
+        run: python3 .github/snippets/extract.py
+
+      - name: Build snippets against the newest published packages
+        run: dotnet build .github/snippets/Snippets/Snippets.csproj --nologo
+
+  links:
+    name: Links resolve
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check links in index.html and README.md
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: --no-progress --max-retries 3 --retry-wait-time 5 --timeout 30 --accept '200..=299,429' index.html README.md
+          fail: true

@@ -1,0 +1,5 @@
+# GitHub Pages builds this repo with Jekyll. Without this file, README.md and
+# LICENSE are copied into the site and served as /README.md and /LICENSE.
+exclude:
+  - README.md
+  - LICENSE
