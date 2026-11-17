@@ -1,0 +1,10 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "The family preset, for the pinned workflow actions. The snippet project floats its package versions on purpose (.github/snippets/Snippets/Snippets.csproj), so NuGet updates are off.",
+  "extends": [
+    "github>JohnVerheij/assertions-ci//renovate/family"
+  ],
+  "nuget": {
+    "enabled": false
+  }
+}

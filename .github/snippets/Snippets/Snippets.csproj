@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Compile-only check for the code snippets on index.html. extract.py writes
+    Snippets.g.cs from the page; this project is built, never run. The package
+    versions float on purpose so that the build always uses the newest
+    published packages. There is no lock file. Warnings are errors, so a
+    snippet that calls an obsolete API fails too. Package audit is off: this
+    project only compiles the snippets, the package repositories run the audit.
+  -->
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+    <NuGetAudit>false</NuGetAudit>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TUnit" Version="*" />
+    <PackageReference Include="LogAssertions.TUnit" Version="*" />
+    <PackageReference Include="TimeAssertions.TUnit" Version="*" />
+    <PackageReference Include="SnapshotAssertions.TUnit" Version="*" />
+    <PackageReference Include="MathAssertions.TUnit" Version="*" />
+    <PackageReference Include="JsonAssertions.TUnit" Version="*" />
+    <PackageReference Include="SseAssertions.TUnit" Version="*" />
+    <PackageReference Include="GrpcAssertions.TUnit" Version="*" />
+    <PackageReference Include="TracingAssertions.TUnit" Version="*" />
+    <PackageReference Include="MetricsAssertions.TUnit" Version="*" />
+  </ItemGroup>
+
+</Project>

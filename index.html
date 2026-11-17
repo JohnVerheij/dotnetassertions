@@ -3,11 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>DotNetAssertions - AOT-safe assertions for TUnit</title>
-<meta name="description" content="AOT-safe assertion extensions for TUnit. Nine small packages, each adding a fluent Assert.That(...) vocabulary for one domain: logs, time, JSON, snapshots, math, traces, metrics, SSE, and gRPC.">
+<meta name="description" content="AOT-safe assertion extensions for TUnit. Nine small packages, each adding a fluent Assert.That(...) vocabulary for one domain: logs, time, snapshots, math, JSON, SSE, gRPC, traces, and metrics.">
+<link rel="canonical" href="https://dotnetassertions.dev/">
 <meta property="og:title" content="DotNetAssertions - AOT-safe assertions for TUnit">
-<meta property="og:description" content="AOT-safe assertion extensions for TUnit. One fluent vocabulary per domain: logs, time, JSON, snapshots, math, traces, metrics, SSE, and gRPC.">
+<meta property="og:description" content="AOT-safe assertion extensions for TUnit. One fluent vocabulary per domain: logs, time, snapshots, math, JSON, SSE, gRPC, traces, and metrics.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://dotnetassertions.dev/">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -21,13 +24,13 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "LogAssertions.TUnit", "url": "https://logassertions.dev" },
       { "@type": "ListItem", "position": 2, "name": "TimeAssertions.TUnit", "url": "https://timeassertions.dev" },
-      { "@type": "ListItem", "position": 3, "name": "JsonAssertions.TUnit", "url": "https://jsonassertions.dev" },
-      { "@type": "ListItem", "position": 4, "name": "SnapshotAssertions.TUnit", "url": "https://snapshotassertions.dev" },
-      { "@type": "ListItem", "position": 5, "name": "MathAssertions.TUnit", "url": "https://mathassertions.dev" },
-      { "@type": "ListItem", "position": 6, "name": "TracingAssertions.TUnit", "url": "https://tracingassertions.dev" },
-      { "@type": "ListItem", "position": 7, "name": "MetricsAssertions.TUnit", "url": "https://metricsassertions.dev" },
-      { "@type": "ListItem", "position": 8, "name": "SseAssertions.TUnit", "url": "https://sseassertions.dev" },
-      { "@type": "ListItem", "position": 9, "name": "GrpcAssertions.TUnit", "url": "https://grpcassertions.dev" }
+      { "@type": "ListItem", "position": 3, "name": "SnapshotAssertions.TUnit", "url": "https://snapshotassertions.dev" },
+      { "@type": "ListItem", "position": 4, "name": "MathAssertions.TUnit", "url": "https://mathassertions.dev" },
+      { "@type": "ListItem", "position": 5, "name": "JsonAssertions.TUnit", "url": "https://jsonassertions.dev" },
+      { "@type": "ListItem", "position": 6, "name": "SseAssertions.TUnit", "url": "https://sseassertions.dev" },
+      { "@type": "ListItem", "position": 7, "name": "GrpcAssertions.TUnit", "url": "https://grpcassertions.dev" },
+      { "@type": "ListItem", "position": 8, "name": "TracingAssertions.TUnit", "url": "https://tracingassertions.dev" },
+      { "@type": "ListItem", "position": 9, "name": "MetricsAssertions.TUnit", "url": "https://metricsassertions.dev" }
     ]
   }
 }
@@ -52,11 +55,13 @@
     --ground: #f4f4f7; --surface: #ffffff; --ink: #17171d; --muted: #5c5c6b; --faint: #8a8a99;
     --border: #e4e4ec; --border-strong: #d3d3de; --accent: #5836f0; --accent-soft: rgba(88,54,240,0.10);
     --code-bg: #f7f7fb; --shadow: 0 1px 2px rgba(20,20,40,0.04), 0 8px 24px rgba(20,20,40,0.05);
+    color-scheme: light;
   }
   :root[data-theme="dark"] {
     --ground: #0e0e13; --surface: #16161d; --ink: #e9e9f1; --muted: #9a9aab; --faint: #6b6b7b;
     --border: #24242e; --border-strong: #33333f; --accent: #9683ff; --accent-soft: rgba(150,131,255,0.13);
     --code-bg: #101017; --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+    color-scheme: dark;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); line-height: 1.55; -webkit-font-smoothing: antialiased; }
@@ -80,7 +85,7 @@
   .hero-lines .row { white-space: nowrap; }
   .k { color: var(--faint); }
   .m { color: var(--accent); }
-  .eyebrow { display: flex; align-items: baseline; gap: 12px; margin: 64px 0 22px; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+  .eyebrow { display: flex; font-weight: 400; align-items: baseline; gap: 12px; margin: 64px 0 22px; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
   .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--border); }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(304px, 1fr)); gap: 16px; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 12px; transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
@@ -92,6 +97,7 @@
   .snippet { font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; margin: 0; background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; overflow-x: auto; color: var(--ink); }
   .snippet .k { color: var(--faint); }
   .snippet .m { color: var(--accent); }
+  .install { display: block; font-family: var(--mono); font-size: 0.72rem; line-height: 1.5; margin: -4px 0 0; color: var(--faint); white-space: nowrap; overflow-x: auto; }
   .links { display: flex; gap: 6px; margin-top: 4px; }
   .links a { font-family: var(--mono); font-size: 0.75rem; text-decoration: none; color: var(--muted); padding: 5px 10px; border: 1px solid var(--border); border-radius: 7px; transition: color 0.15s, border-color 0.15s, background 0.15s; }
   .links a:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
@@ -115,36 +121,37 @@
 
   <header>
     <h1 class="lede">AOT-safe assertions for TUnit.</h1>
-    <p class="sub">Nine small packages. Each adds a fluent <code>Assert.That(...)</code> vocabulary for one domain: logs, time, JSON, snapshots, math, traces, metrics, SSE, and gRPC. Reflection-free, MIT, test projects only.</p>
+    <p class="sub">Nine small packages. Each adds a fluent <code>Assert.That(...)</code> vocabulary for one domain: logs, time, snapshots, math, JSON, SSE, gRPC, traces, and metrics. Reflection-free, MIT, test projects only.</p>
     <div class="hero-lines" aria-hidden="true">
-      <div class="row"><span class="k">await</span> Assert.That(collector).<span class="m">HasLogged</span>().<span class="m">AtLevel</span>(LogLevel.Warning);</div>
-      <div class="row"><span class="k">await</span> Assert.That(fakeTime).<span class="m">HasNoActiveTimers</span>();</div>
+      <div class="row"><span class="k">await</span> Assert.That(collector).<span class="m">HasLogged</span>().<span class="m">AtLevel</span>(LogLevel.Warning).<span class="m">Once</span>();</div>
+      <div class="row"><span class="k">await</span> Assert.That(time).<span class="m">HasNoActiveTimers</span>();</div>
       <div class="row"><span class="k">await</span> Assert.That(json).<span class="m">HasJsonValue</span>("user.age", 30);</div>
     </div>
     <p class="note">Not a general-purpose assertion library. TUnit's own assertions stay as they are; these packages only add domain vocabulary on top of them.</p>
+    <p class="note">The packages target every .NET version in Microsoft support: .NET 10 and .NET 11 today.</p>
   </header>
 
-  <div class="eyebrow">The family</div>
+  <h2 class="eyebrow">The family</h2>
 
   <div class="grid">
-    <article class="card"><h3 class="pkg">LogAssertions<span class="t">.TUnit</span></h3><p class="desc">Assert on logs captured from <code>ILogger</code> via a fake collector.</p><pre class="snippet"><span class="k">await</span> Assert.That(collector).<span class="m">HasLoggedOnly</span>(LogLevel.Warning);</pre><div class="links"><a href="https://logassertions.dev">Docs</a><a href="https://www.nuget.org/packages/LogAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/LogAssertions.TUnit">GitHub</a></div></article>
-    <article class="card"><h3 class="pkg">TimeAssertions<span class="t">.TUnit</span></h3><p class="desc"><code>TimeProvider</code> state, timer leaks, and time budgets.</p><pre class="snippet"><span class="k">await</span> Assert.That(fakeTime).<span class="m">HasAdvancedExactly</span>(TimeSpan.FromMinutes(31));</pre><div class="links"><a href="https://timeassertions.dev">Docs</a><a href="https://www.nuget.org/packages/TimeAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/TimeAssertions.TUnit">GitHub</a></div></article>
-    <article class="card"><h3 class="pkg">JsonAssertions<span class="t">.TUnit</span></h3><p class="desc">JSON path, value, and shape assertions over a document.</p><pre class="snippet"><span class="k">await</span> Assert.That(json).<span class="m">HasJsonProperty</span>("user.name");</pre><div class="links"><a href="https://jsonassertions.dev">Docs</a><a href="https://www.nuget.org/packages/JsonAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/JsonAssertions.TUnit">GitHub</a></div></article>
-    <article class="card"><h3 class="pkg">SnapshotAssertions<span class="t">.TUnit</span></h3><p class="desc">Text-snapshot and approval testing with scrubbers and diffs.</p><pre class="snippet"><span class="k">await</span> Assert.That(actual).<span class="m">MatchesSnapshot</span>();</pre><div class="links"><a href="https://snapshotassertions.dev">Docs</a><a href="https://www.nuget.org/packages/SnapshotAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/SnapshotAssertions.TUnit">GitHub</a></div></article>
-    <article class="card"><h3 class="pkg">MathAssertions<span class="t">.TUnit</span></h3><p class="desc">Tolerance-aware numeric, geometry, and statistics checks.</p><pre class="snippet"><span class="k">await</span> Assert.That(actual).<span class="m">IsApproximatelyEqualTo</span>(target, tolerance: 1e-3);</pre><div class="links"><a href="https://mathassertions.dev">Docs</a><a href="https://www.nuget.org/packages/MathAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/MathAssertions.TUnit">GitHub</a></div></article>
-    <article class="card"><h3 class="pkg">TracingAssertions<span class="t">.TUnit</span></h3><p class="desc">OpenTelemetry <code>Activity</code>, span, and tag assertions.</p><pre class="snippet"><span class="k">await</span> Assert.That(span).<span class="m">HasOperationName</span>("order.pipeline");</pre><div class="links"><a href="https://tracingassertions.dev">Docs</a><a href="https://www.nuget.org/packages/TracingAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/TracingAssertions.TUnit">GitHub</a></div></article>
-    <article class="card"><h3 class="pkg">MetricsAssertions<span class="t">.TUnit</span></h3><p class="desc">Metrics and instrument measurements via a collector.</p><pre class="snippet"><span class="k">await</span> Assert.That(capture).<span class="m">HasCounterTotal</span>(5);</pre><div class="links"><a href="https://metricsassertions.dev">Docs</a><a href="https://www.nuget.org/packages/MetricsAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/MetricsAssertions.TUnit">GitHub</a></div></article>
-    <article class="card"><h3 class="pkg">SseAssertions<span class="t">.TUnit</span></h3><p class="desc">Server-Sent Events wire-format and event-stream checks.</p><pre class="snippet"><span class="k">await</span> Assert.That(body).<span class="m">HasSseEvent</span>("tick").<span class="m">Exactly</span>(3);</pre><div class="links"><a href="https://sseassertions.dev">Docs</a><a href="https://www.nuget.org/packages/SseAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/SseAssertions.TUnit">GitHub</a></div></article>
-    <article class="card"><h3 class="pkg">GrpcAssertions<span class="t">.TUnit</span></h3><p class="desc">gRPC status codes, error details, and call assertions.</p><pre class="snippet"><span class="k">await</span> Assert.That(() =&gt; client.GetOrderAsync(request, ct))
-    .<span class="m">ThrowsGrpcException</span>(StatusCode.Unavailable);</pre><div class="links"><a href="https://grpcassertions.dev">Docs</a><a href="https://www.nuget.org/packages/GrpcAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/GrpcAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">LogAssertions<span class="t">.TUnit</span></h3><p class="desc">Filter captured <code>ILogger</code> records by level, message, exception, property and scope, then assert counts, order, or that nothing above a level was logged. Failures print the captured records.</p><pre class="snippet"><span class="k">await</span> Assert.That(collector).<span class="m">HasLoggedOnly</span>(LogLevel.Warning);</pre><code class="install">dotnet add package LogAssertions.TUnit</code><div class="links"><a href="https://logassertions.dev">Docs</a><a href="https://www.nuget.org/packages/LogAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/LogAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">TimeAssertions<span class="t">.TUnit</span></h3><p class="desc">Assert fake-clock state, timer leaks, fire counts and due times, and put a time budget on any assertion with <code>WithinTimeBudget</code>.</p><pre class="snippet"><span class="k">await</span> Assert.That(fakeTime).<span class="m">HasAdvancedExactly</span>(TimeSpan.FromMinutes(31));</pre><code class="install">dotnet add package TimeAssertions.TUnit</code><div class="links"><a href="https://timeassertions.dev">Docs</a><a href="https://www.nuget.org/packages/TimeAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/TimeAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">SnapshotAssertions<span class="t">.TUnit</span></h3><p class="desc">Text snapshots with plain <code>.expected.txt</code> baselines and line diffs. Scrubbers replace GUIDs, timestamps and epoch values with stable tokens.</p><pre class="snippet"><span class="k">await</span> Assert.That(actual).<span class="m">MatchesSnapshot</span>().<span class="m">WithScrubber</span>(Scrubbers.Default);</pre><code class="install">dotnet add package SnapshotAssertions.TUnit</code><div class="links"><a href="https://snapshotassertions.dev">Docs</a><a href="https://www.nuget.org/packages/SnapshotAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/SnapshotAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">MathAssertions<span class="t">.TUnit</span></h3><p class="desc">Tolerance-aware checks for vectors, quaternions, matrices and poses, including rotational equivalence. Also statistics, sequences, number theory and 3D geometry.</p><pre class="snippet"><span class="k">await</span> Assert.That(rotation).<span class="m">IsRotationallyEquivalentTo</span>(expected, tolerance: 1e-6);</pre><code class="install">dotnet add package MathAssertions.TUnit</code><div class="links"><a href="https://mathassertions.dev">Docs</a><a href="https://www.nuget.org/packages/MathAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/MathAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">JsonAssertions<span class="t">.TUnit</span></h3><p class="desc">Assert at a path such as <code>items[*].name</code>: existence, value, array length, subset and equivalence. Works on strings, <code>JsonElement</code> and HTTP responses, with ProblemDetails checks.</p><pre class="snippet"><span class="k">await</span> Assert.That(json).<span class="m">HasJsonProperty</span>("items[*].name");</pre><code class="install">dotnet add package JsonAssertions.TUnit</code><div class="links"><a href="https://jsonassertions.dev">Docs</a><a href="https://www.nuget.org/packages/JsonAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/JsonAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">SseAssertions<span class="t">.TUnit</span></h3><p class="desc">Assert named events, data, ids and retry directives on an SSE body, <code>Stream</code> or HTTP response. Reads stop once the outcome is decided, so endless streams work.</p><pre class="snippet"><span class="k">await</span> Assert.That(body).<span class="m">HasSseEvent</span>("tick").<span class="m">Exactly</span>(3);</pre><code class="install">dotnet add package SseAssertions.TUnit</code><div class="links"><a href="https://sseassertions.dev">Docs</a><a href="https://www.nuget.org/packages/SseAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/SseAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">GrpcAssertions<span class="t">.TUnit</span></h3><p class="desc">Assert that a call throws an <code>RpcException</code> with a given status, detail or trailer, and check server streams. <code>GrpcCallBuilder</code> builds fake calls.</p><pre class="snippet"><span class="k">await</span> Assert.That(<span class="k">async</span> () =&gt; <span class="k">await</span> client.GetOrderAsync(request, cancellationToken: ct))
+    .<span class="m">ThrowsGrpcException</span>(StatusCode.Unavailable);</pre><code class="install">dotnet add package GrpcAssertions.TUnit</code><div class="links"><a href="https://grpcassertions.dev">Docs</a><a href="https://www.nuget.org/packages/GrpcAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/GrpcAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">TracingAssertions<span class="t">.TUnit</span></h3><p class="desc">Capture spans per test, then find spans and assert tags, kind, status, parent and child links, and durations. A renderer prints the captured spans as a tree.</p><pre class="snippet"><span class="k">await</span> Assert.That(capture).<span class="m">HasSpanWithTag</span>("order.place", "order.id", 42);</pre><code class="install">dotnet add package TracingAssertions.TUnit</code><div class="links"><a href="https://tracingassertions.dev">Docs</a><a href="https://www.nuget.org/packages/TracingAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/TracingAssertions.TUnit">GitHub</a></div></article>
+    <article class="card"><h3 class="pkg">MetricsAssertions<span class="t">.TUnit</span></h3><p class="desc">Capture <code>System.Diagnostics.Metrics</code> instruments per test and assert counter totals, measurement counts, tags and histogram samples. One capture can bundle several instruments.</p><pre class="snippet"><span class="k">await</span> Assert.That(capture).<span class="m">HasCounterTotal</span>(5);</pre><code class="install">dotnet add package MetricsAssertions.TUnit</code><div class="links"><a href="https://metricsassertions.dev">Docs</a><a href="https://www.nuget.org/packages/MetricsAssertions.TUnit">NuGet</a><a href="https://github.com/JohnVerheij/MetricsAssertions.TUnit">GitHub</a></div></article>
   </div>
 
   <footer>
     <span>MIT</span><span class="dot">&bull;</span>
     <span>&copy; 2026 John Verheij</span><span class="dot">&bull;</span>
-    <span>net10.0</span><span class="dot">&bull;</span>
+    <span>.NET 10 and 11</span><span class="dot">&bull;</span>
     <a href="https://github.com/JohnVerheij">GitHub</a><span class="dot">&bull;</span>
-    <span class="k">built on TUnit</span>
+    <a href="https://github.com/thomhurst/TUnit">built on TUnit</a>
   </footer>
 </div>
 <script>
