@@ -49,12 +49,14 @@ To run the snippet check locally:
 
 ```sh
 python .github/snippets/extract.py
-dotnet restore .github/snippets/Snippets/Snippets.csproj --force-evaluate
+dotnet restore .github/snippets/Snippets/Snippets.csproj --force-evaluate --no-http-cache
 dotnet build .github/snippets/Snippets/Snippets.csproj --no-restore
 ```
 
-The forced restore takes the newest packages: their versions float (`*`) and
-there is no lock file, so a plain build can reuse an earlier restore.
+Both flags make the restore take the newest packages. The versions float (`*`)
+and there is no lock file, so without `--force-evaluate` a build can reuse an
+earlier restore. NuGet keeps the list of package versions for up to 30 minutes,
+so without `--no-http-cache` a package released in that time is missed.
 
 When a snippet needs a new variable, add its declaration to `PACKAGES` in
 `extract.py`.
